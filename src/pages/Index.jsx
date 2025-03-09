@@ -1,4 +1,5 @@
 
+import { useAuth } from "@/context/AuthContext";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -6,6 +7,8 @@ import { Link } from "react-router-dom";
 import { Code, BookOpen, Award, ArrowRight, CheckCircle } from "lucide-react";
 
 const Index = () => {
+  const { isAuthenticated } = useAuth();
+
   return (
     <div className="flex min-h-screen flex-col overflow-hidden">
       <Header />
@@ -25,13 +28,23 @@ const Index = () => {
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row animate-slide-up" style={{ animationDelay: "400ms" }}>
-                  <Button asChild size="lg" className="stripe-button rounded-full px-8">
-                    <Link to="/register">
-                      Get Started <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
+                  {isAuthenticated ? (
+                    <Button asChild size="lg" className="stripe-button rounded-full px-8">
+                      <Link to="/dashboard">
+                        Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
+                    </Button>
+                  ) : (
+                    <Button asChild size="lg" className="stripe-button rounded-full px-8">
+                      <Link to="/register">
+                        Get Started <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
+                    </Button>
+                  )}
                   <Button variant="outline" size="lg" asChild className="rounded-full">
-                    <Link to="/courses">Explore Courses</Link>
+                    <Link to={isAuthenticated ? "/courses" : "/login"}>
+                      {isAuthenticated ? "Explore Courses" : "Sign In"}
+                    </Link>
                   </Button>
                 </div>
               </div>
@@ -192,11 +205,19 @@ const Index = () => {
                 </p>
               </div>
               <div className="mx-auto w-full max-w-sm space-y-2 animate-slide-up" style={{ animationDelay: "200ms" }}>
-                <Button asChild className="w-full stripe-button rounded-full" size="lg">
-                  <Link to="/register">
-                    Sign Up for Free <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
+                {isAuthenticated ? (
+                  <Button asChild className="w-full stripe-button rounded-full" size="lg">
+                    <Link to="/dashboard">
+                      Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                ) : (
+                  <Button asChild className="w-full stripe-button rounded-full" size="lg">
+                    <Link to="/register">
+                      Sign Up for Free <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                )}
                 <p className="text-xs text-muted-foreground">
                   No credit card required. Start learning instantly.
                 </p>

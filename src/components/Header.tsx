@@ -1,18 +1,26 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { useAuth } from "@/context/AuthContext";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
-          <span className="font-bold text-2xl">CodeQuest</span>
+          <span className="font-bold text-2xl stripe-gradient-text animate-text-gradient">CodeQuest</span>
         </Link>
         
         <div className="hidden md:flex md:items-center md:space-x-6">
@@ -26,16 +34,32 @@ export function Header() {
             <Link to="/about" className="transition-colors hover:text-foreground/80">
               About
             </Link>
+            {isAuthenticated && (
+              <Link to="/dashboard" className="transition-colors hover:text-foreground/80">
+                Dashboard
+              </Link>
+            )}
           </nav>
           
           <div className="flex items-center space-x-4">
             <ThemeToggle />
-            <Button asChild variant="default" size="sm">
-              <Link to="/login">Sign In</Link>
-            </Button>
-            <Button asChild variant="outline" size="sm">
-              <Link to="/register">Sign Up</Link>
-            </Button>
+            {isAuthenticated ? (
+              <div className="flex items-center space-x-4">
+                <span className="text-sm font-medium animate-fade-in">Hi, {user?.name}</span>
+                <Button variant="outline" size="sm" onClick={handleLogout}>
+                  Sign Out
+                </Button>
+              </div>
+            ) : (
+              <>
+                <Button asChild variant="default" size="sm" className="bg-stripe-purple hover:bg-stripe-lightPurple">
+                  <Link to="/login">Sign In</Link>
+                </Button>
+                <Button asChild variant="outline" size="sm">
+                  <Link to="/register">Sign Up</Link>
+                </Button>
+              </>
+            )}
           </div>
         </div>
         
@@ -79,13 +103,33 @@ export function Header() {
               >
                 About
               </Link>
+              {isAuthenticated && (
+                <Link 
+                  to="/dashboard" 
+                  className="block py-2 transition-colors hover:text-foreground/80"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Dashboard
+                </Link>
+              )}
               <div className="flex space-x-2 pt-2">
-                <Button asChild variant="default" size="sm">
-                  <Link to="/login" onClick={() => setIsMenuOpen(false)}>Sign In</Link>
-                </Button>
-                <Button asChild variant="outline" size="sm">
-                  <Link to="/register" onClick={() => setIsMenuOpen(false)}>Sign Up</Link>
-                </Button>
+                {isAuthenticated ? (
+                  <Button variant="outline" size="sm" onClick={() => {
+                    handleLogout();
+                    setIsMenuOpen(false);
+                  }}>
+                    Sign Out
+                  </Button>
+                ) : (
+                  <>
+                    <Button asChild variant="default" size="sm" className="bg-stripe-purple hover:bg-stripe-lightPurple">
+                      <Link to="/login" onClick={() => setIsMenuOpen(false)}>Sign In</Link>
+                    </Button>
+                    <Button asChild variant="outline" size="sm">
+                      <Link to="/register" onClick={() => setIsMenuOpen(false)}>Sign Up</Link>
+                    </Button>
+                  </>
+                )}
               </div>
             </nav>
           </div>
