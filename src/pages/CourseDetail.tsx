@@ -24,7 +24,7 @@ const CourseDetail = () => {
     category: courseId === "1" ? "Java" : 
               courseId === "2" ? "Python" : 
               courseId === "3" ? "JavaScript" : "Programming",
-    modules: 12,
+    totalModules: 12,
     duration: "20 hours",
     students: 1245,
     instructor: "Alex Johnson",
