@@ -1,5 +1,5 @@
-import type { Config } from "tailwindcss";
 
+/** @type {import('tailwindcss').Config} */
 export default {
 	darkMode: ["class"],
 	content: [
@@ -71,6 +71,14 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				stripe: {
+					purple: '#635BFF',
+					lightPurple: '#7A73FF',
+					darkPurple: '#4F46E5',
+					blue: '#00D4FF',
+					darkBlue: '#0099E5',
+					gradient: '#7A73FF',
 				}
 			},
 			borderRadius: {
@@ -107,7 +115,7 @@ export default {
 				},
 				"slide-up": {
 					"0%": {
-						transform: "translateY(10px)",
+						transform: "translateY(20px)",
 						opacity: "0",
 					},
 					"100%": {
@@ -117,24 +125,40 @@ export default {
 				},
 				"slide-down": {
 					"0%": {
-						transform: "translateY(-10px)",
+						transform: "translateY(-20px)",
 						opacity: "0",
 					},
 					"100%": {
 						transform: "translateY(0)",
 						opacity: "1",
 					},
-				}
+				},
+				"fade-in": {
+					"0%": { opacity: "0" },
+					"100%": { opacity: "1" },
+				},
+				"blur-in": {
+					"0%": { 
+						filter: "blur(12px)",
+						opacity: "0" 
+					},
+					"100%": { 
+						filter: "blur(0px)",
+						opacity: "1" 
+					},
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				"text-gradient": "text-gradient 8s ease infinite",
-				"slide-up": "slide-up 0.4s ease-out",
-				"slide-down": "slide-down 0.4s ease-out",
+				"text-gradient": "text-gradient 6s ease infinite",
+				"slide-up": "slide-up 0.5s ease-out",
+				"slide-down": "slide-down 0.5s ease-out",
 				"slide-up-slow": "slide-up 0.7s ease-out",
+				"fade-in": "fade-in 0.5s ease-out",
+				"blur-in": "blur-in 0.7s ease-out",
 			}
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
-} satisfies Config;
+}
