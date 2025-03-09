@@ -3,10 +3,10 @@ import type { Config } from "tailwindcss";
 export default {
 	darkMode: ["class"],
 	content: [
-		"./pages/**/*.{ts,tsx}",
-		"./components/**/*.{ts,tsx}",
-		"./app/**/*.{ts,tsx}",
-		"./src/**/*.{ts,tsx}",
+		"./pages/**/*.{ts,tsx,js,jsx}",
+		"./components/**/*.{ts,tsx,js,jsx}",
+		"./app/**/*.{ts,tsx,js,jsx}",
+		"./src/**/*.{ts,tsx,js,jsx}",
 	],
 	prefix: "",
 	theme: {
@@ -18,6 +18,16 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				sans: [
+					"Inter var, Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+					{ fontFeatureSettings: '"cv02", "cv03", "cv04", "cv11"' }
+				],
+				serif: ["Georgia", "Times New Roman", "serif"],
+				mono: ["SFMono-Regular", "Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"],
+				display: ["'Plus Jakarta Sans'", "system-ui", "sans-serif"],
+				heading: ["'Plus Jakarta Sans'", "system-ui", "sans-serif"],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -84,11 +94,45 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				"text-gradient": {
+					"0%, 100%": {
+						"background-size": "200% 200%",
+						"background-position": "left center",
+					},
+					"50%": {
+						"background-size": "200% 200%",
+						"background-position": "right center",
+					},
+				},
+				"slide-up": {
+					"0%": {
+						transform: "translateY(10px)",
+						opacity: "0",
+					},
+					"100%": {
+						transform: "translateY(0)",
+						opacity: "1",
+					},
+				},
+				"slide-down": {
+					"0%": {
+						transform: "translateY(-10px)",
+						opacity: "0",
+					},
+					"100%": {
+						transform: "translateY(0)",
+						opacity: "1",
+					},
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				"text-gradient": "text-gradient 8s ease infinite",
+				"slide-up": "slide-up 0.4s ease-out",
+				"slide-down": "slide-down 0.4s ease-out",
+				"slide-up-slow": "slide-up 0.7s ease-out",
 			}
 		}
 	},
