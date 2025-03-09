@@ -10,7 +10,6 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 
@@ -39,7 +38,7 @@ const Login = () => {
       await login(data.email, data.password);
       toast({
         title: "Login successful",
-        description: "Welcome back to CodeQuest!",
+        description: "Welcome to CodeQuest!",
       });
       navigate("/dashboard");
     } catch (error) {
@@ -106,7 +105,7 @@ const Login = () => {
             </Form>
             
             <div className="mt-4 text-center text-sm">
-              <div className="text-muted-foreground">Demo credentials:</div>
+              <div className="text-muted-foreground">Demo credentials (optional):</div>
               <div className="font-medium">Email: demo@codequest.com</div>
               <div className="font-medium">Password: password</div>
             </div>
