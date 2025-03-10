@@ -20,7 +20,7 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
-          <span className="font-bold text-2xl stripe-gradient-text animate-text-gradient">CodeQuest</span>
+          <span className="font-bold text-2xl stripe-gradient-text animate-text-gradient">Code-Hub</span>
         </Link>
         
         <div className="hidden md:flex md:items-center md:space-x-6">
@@ -53,7 +53,7 @@ export function Header() {
             ) : (
               <>
                 <Button asChild variant="default" size="sm" className="bg-stripe-purple hover:bg-stripe-lightPurple">
-                  <Link to="/login">Sign In</Link>
+                  <Link to="/login">Sign in</Link>
                 </Button>
                 <Button asChild variant="outline" size="sm">
                   <Link to="/register">Sign Up</Link>
@@ -123,7 +123,7 @@ export function Header() {
                 ) : (
                   <>
                     <Button asChild variant="default" size="sm" className="bg-stripe-purple hover:bg-stripe-lightPurple">
-                      <Link to="/login" onClick={() => setIsMenuOpen(false)}>Sign In</Link>
+                      <Link to="/login" onClick={() => setIsMenuOpen(false)}>Sign in</Link>
                     </Button>
                     <Button asChild variant="outline" size="sm">
                       <Link to="/register" onClick={() => setIsMenuOpen(false)}>Sign Up</Link>

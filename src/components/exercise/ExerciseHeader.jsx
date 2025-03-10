@@ -34,7 +34,7 @@ const ExerciseHeader = ({
           disabled={isSubmitting || disabled}
           className={showSuccess ? "bg-green-600 hover:bg-green-700" : ""}
         >
-          {isSubmitting ? "Checking..." : (showSuccess ? "Passed!" : "Submit")}
+          {isSubmitting ? "Checking..." : (showSuccess ? "Passed!" : "Submit Answer »")}
         </Button>
         {showSuccess && (
           <Button onClick={handleNextExercise}>

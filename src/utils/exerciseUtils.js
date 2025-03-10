@@ -4,8 +4,8 @@ export const getExerciseData = (exerciseId, language = "javascript") => {
   const exercises = {
     javascript: {
       id: parseInt(exerciseId || "101"),
-      title: "JavaScript: Hello World Program",
-      instructions: "In this exercise, you'll write your first JavaScript program. Complete the code below to output 'Hello, CodeQuest!' to the console.",
+      title: "JavaScript Syntax",
+      instructions: "Insert the missing part of the code below to output \"Hello, CodeHub!\".",
       hints: [
         "Use the console.log() function to print to the console.",
         "Make sure to match the expected output exactly, including capitalization and punctuation."
@@ -13,7 +13,7 @@ export const getExerciseData = (exerciseId, language = "javascript") => {
       initialCode: 
 `function greet() {
   // Complete the code below
-  let message = "Hello, CodeQuest!";
+  let message = "Hello, CodeHub!";
   
   // Your code here
   
@@ -25,7 +25,7 @@ console.log(greet());`,
       solution: 
 `function greet() {
   // Complete the code below
-  let message = "Hello, CodeQuest!";
+  let message = "Hello, CodeHub!";
   
   // Your code here
   console.log(message);
@@ -38,7 +38,7 @@ console.log(greet());`,
       testCases: [
         {
           input: "",
-          expectedOutput: "Hello, CodeQuest!"
+          expectedOutput: "Hello, CodeHub!"
         }
       ],
       // New fill-in-the-blank question type
@@ -50,8 +50,8 @@ console.log(greet());`,
     },
     python: {
       id: parseInt(exerciseId || "201"),
-      title: "Python: Hello World Program",
-      instructions: "In this Python exercise, you'll write your first program. Complete the code below to output 'Hello, CodeQuest!' to the console.",
+      title: "Python Syntax",
+      instructions: "Insert the missing part of the code below to output \"Hello, CodeHub!\".",
       hints: [
         "Use the print() function to output text.",
         "Make sure to match the expected output exactly, including capitalization and punctuation."
@@ -59,7 +59,7 @@ console.log(greet());`,
       initialCode: 
 `def greet():
     # Complete the code below
-    message = "Hello, CodeQuest!"
+    message = "Hello, CodeHub!"
     
     # Your code here
     
@@ -70,7 +70,7 @@ print(greet())`,
       solution: 
 `def greet():
     # Complete the code below
-    message = "Hello, CodeQuest!"
+    message = "Hello, CodeHub!"
     
     # Your code here
     print(message)
@@ -82,7 +82,7 @@ print(greet())`,
       testCases: [
         {
           input: "",
-          expectedOutput: "Hello, CodeQuest!"
+          expectedOutput: "Hello, CodeHub!"
         }
       ],
       // New fill-in-the-blank question type
@@ -94,8 +94,8 @@ print(greet())`,
     },
     java: {
       id: parseInt(exerciseId || "301"),
-      title: "Java: Hello World Program",
-      instructions: "In this Java exercise, you'll write your first program. Complete the code below to output 'Hello, CodeQuest!' to the console.",
+      title: "Java Syntax",
+      instructions: "Insert the missing part of the code below to output \"Hello, CodeHub!\".",
       hints: [
         "Use System.out.println() to print to the console.",
         "Make sure to match the expected output exactly, including capitalization and punctuation."
@@ -104,7 +104,7 @@ print(greet())`,
 `public class HelloWorld {
     public static String greet() {
         // Complete the code below
-        String message = "Hello, CodeQuest!";
+        String message = "Hello, CodeHub!";
         
         // Your code here
         
@@ -120,7 +120,7 @@ print(greet())`,
 `public class HelloWorld {
     public static String greet() {
         // Complete the code below
-        String message = "Hello, CodeQuest!";
+        String message = "Hello, CodeHub!";
         
         // Your code here
         System.out.println(message);
@@ -136,7 +136,7 @@ print(greet())`,
       testCases: [
         {
           input: "",
-          expectedOutput: "Hello, CodeQuest!"
+          expectedOutput: "Hello, CodeHub!"
         }
       ],
       // New fill-in-the-blank question type
@@ -159,4 +159,3 @@ export const getAvailableLanguages = () => {
     { id: "java", name: "Java" }
   ];
 };
-
