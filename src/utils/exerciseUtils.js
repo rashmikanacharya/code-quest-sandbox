@@ -4,11 +4,12 @@ export const getExerciseData = (exerciseId, language = "javascript") => {
   const exercises = {
     javascript: {
       id: parseInt(exerciseId || "101"),
-      title: "JavaScript Syntax",
-      instructions: "Insert the missing part of the code below to output \"Hello, CodeHub!\".",
+      title: "JavaScript: Console Output",
+      instructions: "In this exercise, you need to use console.log() to output the message \"Hello, CodeHub!\".",
       hints: [
         "Use the console.log() function to print to the console.",
-        "Make sure to match the expected output exactly, including capitalization and punctuation."
+        "Make sure to match the expected output exactly, including capitalization and punctuation.",
+        "The message variable already contains the text you need to print."
       ],
       initialCode: 
 `function greet() {
@@ -41,7 +42,7 @@ console.log(greet());`,
           expectedOutput: "Hello, CodeHub!"
         }
       ],
-      // New fill-in-the-blank question type
+      // Fill-in-the-blank question type
       fillInTheBlank: {
         question: "What function is used to output text to the console in JavaScript?",
         answer: "console.log",
@@ -50,11 +51,12 @@ console.log(greet());`,
     },
     python: {
       id: parseInt(exerciseId || "201"),
-      title: "Python Syntax",
-      instructions: "Insert the missing part of the code below to output \"Hello, CodeHub!\".",
+      title: "Python: Print Output",
+      instructions: "In this exercise, you need to use print() to output the message \"Hello, CodeHub!\".",
       hints: [
         "Use the print() function to output text.",
-        "Make sure to match the expected output exactly, including capitalization and punctuation."
+        "Make sure to match the expected output exactly, including capitalization and punctuation.",
+        "The message variable already contains the text you need to print."
       ],
       initialCode: 
 `def greet():
@@ -85,7 +87,7 @@ print(greet())`,
           expectedOutput: "Hello, CodeHub!"
         }
       ],
-      // New fill-in-the-blank question type
+      // Fill-in-the-blank question type
       fillInTheBlank: {
         question: "What function is used to output text to the console in Python?",
         answer: "print",
@@ -94,11 +96,12 @@ print(greet())`,
     },
     java: {
       id: parseInt(exerciseId || "301"),
-      title: "Java Syntax",
-      instructions: "Insert the missing part of the code below to output \"Hello, CodeHub!\".",
+      title: "Java: Console Output",
+      instructions: "In this exercise, you need to use System.out.println() to output the message \"Hello, CodeHub!\".",
       hints: [
         "Use System.out.println() to print to the console.",
-        "Make sure to match the expected output exactly, including capitalization and punctuation."
+        "Make sure to match the expected output exactly, including capitalization and punctuation.",
+        "The message variable already contains the text you need to print."
       ],
       initialCode: 
 `public class HelloWorld {
@@ -139,7 +142,7 @@ print(greet())`,
           expectedOutput: "Hello, CodeHub!"
         }
       ],
-      // New fill-in-the-blank question type
+      // Fill-in-the-blank question type
       fillInTheBlank: {
         question: "What method is used to output text to the console in Java?",
         answer: "System.out.println",

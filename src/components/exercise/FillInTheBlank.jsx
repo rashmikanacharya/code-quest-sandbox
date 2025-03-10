@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { Check, X, Info } from "lucide-react";
+import { Check, X, Info, ChevronRight, Lightbulb } from "lucide-react";
 
 export const FillInTheBlank = ({ question, onAnswered }) => {
   const [isCorrect, setIsCorrect] = useState(null);
@@ -27,18 +27,18 @@ export const FillInTheBlank = ({ question, onAnswered }) => {
     
     if (matched) {
       onAnswered(true);
-    } else if (attempts >= 2) {
+    } else if (attempts >= 1) {
       setShowHint(true);
     }
   };
 
   return (
     <div className="space-y-4">
-      <div className="p-6 bg-slate-800 dark:bg-slate-900 text-white rounded-t-md">
-        <h3 className="text-xl font-semibold text-center">{question.question}</h3>
+      <div className="p-6 bg-slate-700 dark:bg-slate-800 text-white rounded-t-md">
+        <h3 className="text-xl font-semibold">{question.question}</h3>
       </div>
 
-      <div className="p-4 bg-slate-700 dark:bg-slate-800 text-white">
+      <div className="p-4 bg-slate-600 dark:bg-slate-700 text-white">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
             <FormField
@@ -47,7 +47,7 @@ export const FillInTheBlank = ({ question, onAnswered }) => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <div className="flex gap-3">
+                    <div className="flex flex-col md:flex-row gap-3">
                       <Input 
                         {...field} 
                         placeholder="Type your answer here"
@@ -57,30 +57,45 @@ export const FillInTheBlank = ({ question, onAnswered }) => {
                         }`}
                         disabled={isCorrect === true}
                       />
+                      <Button 
+                        type="submit" 
+                        disabled={isCorrect === true || !form.getValues("answer").trim()}
+                        className="bg-green-600 hover:bg-green-700"
+                      >
+                        Submit <ChevronRight className="ml-1 h-4 w-4" />
+                      </Button>
                     </div>
                   </FormControl>
                 </FormItem>
               )}
             />
             
-            <div className="flex justify-end gap-3">
+            <div className="flex justify-between gap-3">
               {!isCorrect && (
                 <Button 
+                  type="button"
                   variant="outline" 
-                  className="bg-gray-600 hover:bg-gray-700 text-white"
+                  className="bg-amber-600 hover:bg-amber-700 text-white"
                   onClick={() => setShowHint(true)}
+                >
+                  <Lightbulb className="mr-1 h-4 w-4" /> Show Hint
+                </Button>
+              )}
+              
+              {!isCorrect && (
+                <Button 
+                  type="button"
+                  variant="outline" 
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  onClick={() => {
+                    form.setValue("answer", question.answer);
+                    setIsCorrect(true);
+                    onAnswered(true);
+                  }}
                 >
                   Show Answer
                 </Button>
               )}
-              
-              <Button 
-                type="submit" 
-                disabled={isCorrect === true || !form.getValues("answer").trim()}
-                className="bg-green-600 hover:bg-green-700"
-              >
-                Submit Answer »
-              </Button>
             </div>
           </form>
         </Form>
@@ -88,22 +103,24 @@ export const FillInTheBlank = ({ question, onAnswered }) => {
         {isCorrect === false && (
           <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900 rounded text-red-700 dark:text-red-300 flex items-start gap-2">
             <X className="h-5 w-5 mt-0.5" />
-            <p>Incorrect answer. {attempts >= 2 ? "Would you like a hint?" : "Please try again."}</p>
+            <p>Not quite right. {attempts >= 1 ? "Try again or check the hint below." : "Please try again."}</p>
           </div>
         )}
         
         {showHint && !isCorrect && (
-          <div className="mt-3 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900 rounded text-amber-700 dark:text-amber-300">
-            <p>
-              <span className="font-semibold">Hint:</span> {question.hint}
-            </p>
+          <div className="mt-3 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900 rounded text-amber-700 dark:text-amber-300 flex items-start gap-2">
+            <Lightbulb className="h-5 w-5 mt-0.5" />
+            <p><span className="font-semibold">Hint:</span> {question.hint}</p>
           </div>
         )}
         
         {isCorrect && (
           <div className="mt-4 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-900 rounded text-green-700 dark:text-green-300 flex items-start gap-2">
             <Check className="h-5 w-5 mt-0.5" />
-            <p>Correct! You can now proceed to the coding exercise.</p>
+            <div>
+              <p className="font-semibold">Correct!</p>
+              <p>Great job! You can now proceed to the coding exercise.</p>
+            </div>
           </div>
         )}
       </div>

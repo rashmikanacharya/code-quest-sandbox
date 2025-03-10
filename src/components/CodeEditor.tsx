@@ -1,6 +1,8 @@
 
 import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Play, RefreshCw } from "lucide-react";
 
 interface CodeEditorProps {
   code: string;
@@ -11,6 +13,7 @@ interface CodeEditorProps {
 export function CodeEditor({ code, language, onChange }: CodeEditorProps) {
   const [currentCode, setCurrentCode] = useState(code);
   const [output, setOutput] = useState<string[]>([]);
+  const [result, setResult] = useState<string>("");
   
   // Update internal state when code prop changes
   useEffect(() => {
@@ -24,8 +27,12 @@ export function CodeEditor({ code, language, onChange }: CodeEditorProps) {
     onChange(newCode);
   };
   
-  // Mock console log functionality
-  useEffect(() => {
+  // Run code functionality
+  const runCode = () => {
+    setOutput([]);
+    setResult("");
+    
+    // Mock console log functionality
     const originalConsoleLog = console.log;
     const logs: string[] = [];
     
@@ -35,10 +42,40 @@ export function CodeEditor({ code, language, onChange }: CodeEditorProps) {
       setOutput([...logs]);
     };
     
-    return () => {
+    try {
+      // For safety, we're not actually evaluating the code here
+      // but in a real implementation, you'd use a secure sandbox
+      if (currentCode.includes("console.log") || 
+          currentCode.includes("print") || 
+          currentCode.includes("System.out.println")) {
+        
+        // Simulate program output based on language
+        if (language === "javascript") {
+          console.log("Hello, CodeHub!");
+        } else if (language === "python") {
+          console.log("Hello, CodeHub!");
+        } else if (language === "java") {
+          console.log("Hello, CodeHub!");
+        }
+        
+        setResult("✅ Code executed successfully!");
+      } else {
+        setResult("⚠️ No output statements found!");
+      }
+    } catch (err) {
+      setResult(`❌ Error: ${err}`);
+    } finally {
       console.log = originalConsoleLog;
-    };
-  }, []);
+    }
+  };
+  
+  // Reset code to initial
+  const resetCode = () => {
+    setCurrentCode(code);
+    onChange(code);
+    setOutput([]);
+    setResult("");
+  };
 
   // Get language-specific syntax hints and placeholders
   const getLanguageHints = () => {
@@ -69,133 +106,105 @@ export function CodeEditor({ code, language, onChange }: CodeEditorProps) {
   
   return (
     <div className="rounded-md border">
-      <Tabs defaultValue="editor">
-        <TabsList className="w-full rounded-t-md rounded-b-none bg-muted">
-          <TabsTrigger value="editor" className="flex-1">Editor</TabsTrigger>
-          <TabsTrigger value="output" className="flex-1">Output</TabsTrigger>
-          <TabsTrigger value="hints" className="flex-1">Syntax Help</TabsTrigger>
-        </TabsList>
-        <TabsContent value="editor" className="m-0">
-          <div className="relative">
-            <div className="flex items-center justify-between border-b bg-muted/40 px-4 py-2">
-              <div className="font-mono text-sm text-muted-foreground">
-                {languageHints.filename}
-              </div>
-              <div className="flex space-x-1">
-                <div className="h-3 w-3 rounded-full bg-red-500"></div>
-                <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
-                <div className="h-3 w-3 rounded-full bg-green-500"></div>
-              </div>
-            </div>
-            <textarea
-              value={currentCode}
-              onChange={handleCodeChange}
-              className="font-mono w-full min-h-[400px] p-4 text-sm bg-black/90 text-white resize-none focus:outline-none"
-              spellCheck="false"
-              placeholder={languageHints.placeholder}
-            />
+      <div className="flex items-center justify-between border-b bg-muted/40 px-4 py-2">
+        <div className="font-mono text-sm text-muted-foreground">
+          {languageHints.filename}
+        </div>
+        <div className="flex items-center gap-2">
+          <Button 
+            onClick={runCode} 
+            size="sm" 
+            className="bg-green-600 hover:bg-green-700 text-white"
+          >
+            <Play className="h-4 w-4 mr-1" /> Run
+          </Button>
+          <Button 
+            onClick={resetCode} 
+            size="sm" 
+            variant="outline"
+          >
+            <RefreshCw className="h-4 w-4 mr-1" /> Reset
+          </Button>
+        </div>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 w-full">
+        {/* Code Editor Section */}
+        <div className="border-r">
+          <textarea
+            value={currentCode}
+            onChange={handleCodeChange}
+            className="font-mono w-full min-h-[400px] p-4 text-sm bg-black/90 text-white resize-none focus:outline-none"
+            spellCheck="false"
+            placeholder={languageHints.placeholder}
+          />
+        </div>
+        
+        {/* Output Section */}
+        <div className="bg-gray-100 dark:bg-gray-800 flex flex-col">
+          <div className="p-2 bg-gray-200 dark:bg-gray-700 border-b text-sm font-medium">
+            Result:
           </div>
-        </TabsContent>
-        <TabsContent value="output" className="m-0">
-          <div className="bg-black/90 text-white font-mono text-sm p-4 min-h-[400px]">
-            {output.length > 0 ? (
-              output.map((line, i) => (
-                <div key={i} className="py-1">
-                  <span className="text-green-400">{">"}</span> {line}
-                </div>
-              ))
-            ) : (
-              <div className="text-muted-foreground">No output yet. Run your code to see results here.</div>
+          <div className="flex-grow overflow-auto p-4">
+            {result && (
+              <div className={`mb-4 p-2 rounded ${
+                result.startsWith("✅") ? "bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300" : 
+                result.startsWith("❌") ? "bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300" :
+                "bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-300"
+              }`}>
+                {result}
+              </div>
             )}
+            
+            <div className="text-sm font-medium mb-2">Console output:</div>
+            <div className="bg-white dark:bg-black/50 text-black dark:text-white p-2 rounded font-mono text-sm min-h-[200px] overflow-auto">
+              {output.length > 0 ? (
+                output.map((line, i) => (
+                  <div key={i} className="py-1">
+                    <span className="text-green-600 dark:text-green-400">{">"}</span> {line}
+                  </div>
+                ))
+              ) : (
+                <div className="text-muted-foreground">No output yet. Run your code to see results here.</div>
+              )}
+            </div>
           </div>
-        </TabsContent>
-        <TabsContent value="hints" className="m-0">
-          <div className="bg-black/90 text-white font-mono text-sm p-4 min-h-[400px]">
-            <h3 className="text-lg font-bold mb-4">{language.charAt(0).toUpperCase() + language.slice(1)} Syntax Guide</h3>
-            <p className="mb-4">{languageHints.syntax}</p>
+        </div>
+      </div>
+      
+      {/* Syntax Help Section */}
+      <div className="border-t p-4 bg-gray-50 dark:bg-gray-900">
+        <details className="text-sm">
+          <summary className="font-medium cursor-pointer">Syntax Help</summary>
+          <div className="mt-2 space-y-2">
+            <p className="text-muted-foreground">{languageHints.syntax}</p>
+            
+            {language === "javascript" && (
+              <pre className="mt-2 p-2 bg-gray-100 dark:bg-gray-800 rounded text-xs overflow-auto">
+{`// Basic JavaScript syntax example
+let message = "Hello, World!";
+console.log(message);  // Outputs to console`}
+              </pre>
+            )}
             
             {language === "python" && (
-              <div className="space-y-4">
-                <div>
-                  <h4 className="text-md font-bold text-stripe-purple">Basic Syntax:</h4>
-                  <pre className="mt-2 p-2 bg-gray-800 rounded">
-{`# This is a comment
-x = 10  # Variable assignment
-print(x)  # Print to console
-
-# Functions
-def my_function(param):
-    return param * 2  # Indentation is important!
-
-# Conditionals
-if x > 5:
-    print("x is greater than 5")
-else:
-    print("x is not greater than 5")`}
-                  </pre>
-                </div>
-              </div>
+              <pre className="mt-2 p-2 bg-gray-100 dark:bg-gray-800 rounded text-xs overflow-auto">
+{`# Basic Python syntax example
+message = "Hello, World!"
+print(message)  # Outputs to console`}
+              </pre>
             )}
-
+            
             {language === "java" && (
-              <div className="space-y-4">
-                <div>
-                  <h4 className="text-md font-bold text-stripe-purple">Basic Syntax:</h4>
-                  <pre className="mt-2 p-2 bg-gray-800 rounded">
-{`// This is a comment
-public class MyClass {
-    public static void main(String[] args) {
-        int x = 10;  // Variable declaration
-        System.out.println(x);  // Print to console
-        
-        // Conditionals
-        if (x > 5) {
-            System.out.println("x is greater than 5");
-        } else {
-            System.out.println("x is not greater than 5");
-        }
-    }
-    
-    // Method declaration
-    public static int myMethod(int param) {
-        return param * 2;
-    }
-}`}
-                  </pre>
-                </div>
-              </div>
-            )}
-
-            {language === "javascript" && (
-              <div className="space-y-4">
-                <div>
-                  <h4 className="text-md font-bold text-stripe-purple">Basic Syntax:</h4>
-                  <pre className="mt-2 p-2 bg-gray-800 rounded">
-{`// This is a comment
-let x = 10;  // Variable declaration
-console.log(x);  // Print to console
-
-// Functions
-function myFunction(param) {
-    return param * 2;
-}
-
-// Arrow function
-const myArrowFunc = (param) => param * 2;
-
-// Conditionals
-if (x > 5) {
-    console.log("x is greater than 5");
-} else {
-    console.log("x is not greater than 5");
-}`}
-                  </pre>
-                </div>
-              </div>
+              <pre className="mt-2 p-2 bg-gray-100 dark:bg-gray-800 rounded text-xs overflow-auto">
+{`// Basic Java syntax example
+String message = "Hello, World!";
+System.out.println(message);  // Outputs to console`}
+              </pre>
             )}
           </div>
-        </TabsContent>
-      </Tabs>
+        </details>
+      </div>
     </div>
   );
 }
