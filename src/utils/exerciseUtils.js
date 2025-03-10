@@ -44,9 +44,19 @@ console.log(greet());`,
       ],
       // Fill-in-the-blank question type
       fillInTheBlank: {
-        question: "What function is used to output text to the console in JavaScript?",
+        languageName: "JavaScript",
+        question: "Insert the missing part of the code below to output \"Hello World\".",
+        codeSnippet: [
+          "function greet() {",
+          "  let message = \"Hello World\";",
+          "  ______.______(message);",
+          "  return message;",
+          "}",
+          "",
+          "greet();"
+        ],
         answer: "console.log",
-        hint: "It starts with 'console' and ends with 'log'"
+        hint: "In JavaScript, we use 'console.log()' to output messages to the console."
       }
     },
     python: {
@@ -89,9 +99,18 @@ print(greet())`,
       ],
       // Fill-in-the-blank question type
       fillInTheBlank: {
-        question: "What function is used to output text to the console in Python?",
+        languageName: "Python",
+        question: "Insert the missing part of the code below to output \"Hello World\".",
+        codeSnippet: [
+          "def greet():",
+          "    message = \"Hello World\"",
+          "    ______(message)",
+          "    return message",
+          "",
+          "greet()"
+        ],
         answer: "print",
-        hint: "It's a 5-letter word that means to output text"
+        hint: "In Python, we use the 'print()' function to output messages to the console."
       }
     },
     java: {
@@ -144,9 +163,17 @@ print(greet())`,
       ],
       // Fill-in-the-blank question type
       fillInTheBlank: {
-        question: "What method is used to output text to the console in Java?",
-        answer: "System.out.println",
-        hint: "It starts with 'System.out' and ends with 'println'"
+        languageName: "Java",
+        question: "Insert the missing part of the code below to output \"Hello World\".",
+        codeSnippet: [
+          "public class MyClass {",
+          "  public static void main(String[] args) {",
+          "    System._____._____(\"Hello World\");",
+          "  }",
+          "}"
+        ],
+        answer: "out.println",
+        hint: "In Java, we use 'System.out.println()' to output messages to the console."
       }
     }
   };

@@ -4,12 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { Check, X, Info, ChevronRight, Lightbulb } from "lucide-react";
+import { Check, ChevronRight, Lightbulb } from "lucide-react";
 
 export const FillInTheBlank = ({ question, onAnswered }) => {
   const [isCorrect, setIsCorrect] = useState(null);
   const [showHint, setShowHint] = useState(false);
-  const [attempts, setAttempts] = useState(0);
+  const [showAnswer, setShowAnswer] = useState(false);
   
   const form = useForm({
     defaultValues: {
@@ -23,106 +23,115 @@ export const FillInTheBlank = ({ question, onAnswered }) => {
     
     const matched = submittedAnswer.toLowerCase() === correctAnswer.toLowerCase();
     setIsCorrect(matched);
-    setAttempts(attempts + 1);
     
     if (matched) {
       onAnswered(true);
-    } else if (attempts >= 1) {
-      setShowHint(true);
     }
   };
 
-  return (
-    <div className="space-y-4">
-      <div className="p-6 bg-slate-700 dark:bg-slate-800 text-white rounded-t-md">
-        <h3 className="text-xl font-semibold">{question.question}</h3>
-      </div>
+  const handleShowAnswer = () => {
+    form.setValue("answer", question.answer);
+    setIsCorrect(true);
+    setShowAnswer(true);
+    onAnswered(true);
+  };
 
-      <div className="p-4 bg-slate-600 dark:bg-slate-700 text-white">
+  return (
+    <div className="flex flex-col w-full">
+      <div className="bg-slate-800 text-white p-4 rounded-t-md">
+        <h3 className="text-xl font-semibold text-center py-4">{question.languageName} Syntax</h3>
+        
+        {/* Progress indicator */}
+        <div className="w-full bg-slate-600 h-2 rounded-full my-4">
+          <div className="bg-green-500 h-2 rounded-full w-1/3"></div>
+        </div>
+      </div>
+      
+      <div className="bg-slate-700 text-white p-8">
+        <h2 className="text-xl text-center mb-8">
+          {question.question}
+        </h2>
+        
+        <div className="font-mono text-lg bg-slate-800 p-6 rounded mb-8 overflow-x-auto">
+          {question.codeSnippet.map((line, index) => (
+            <div key={index} className="whitespace-pre">
+              {line}
+            </div>
+          ))}
+        </div>
+
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="answer"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <div className="flex flex-col md:flex-row gap-3">
-                      <Input 
-                        {...field} 
-                        placeholder="Type your answer here"
-                        className={`flex-1 text-black dark:text-white ${
-                          isCorrect === true ? "border-green-500 bg-green-50 dark:bg-green-900/20" : 
-                          isCorrect === false ? "border-red-500 bg-red-50 dark:bg-red-900/20" : ""
-                        }`}
-                        disabled={isCorrect === true}
-                      />
-                      <Button 
-                        type="submit" 
-                        disabled={isCorrect === true || !form.getValues("answer").trim()}
-                        className="bg-green-600 hover:bg-green-700"
-                      >
-                        Submit <ChevronRight className="ml-1 h-4 w-4" />
-                      </Button>
-                    </div>
+                    <Input 
+                      {...field} 
+                      placeholder="Type your answer here"
+                      className={`text-black dark:text-white text-center text-lg py-6 ${
+                        isCorrect === true ? "border-green-500 bg-green-50 dark:bg-green-900/20" : 
+                        isCorrect === false ? "border-red-500 bg-red-50 dark:bg-red-900/20" : ""
+                      }`}
+                      disabled={isCorrect === true || showAnswer}
+                    />
                   </FormControl>
                 </FormItem>
               )}
             />
             
-            <div className="flex justify-between gap-3">
-              {!isCorrect && (
-                <Button 
-                  type="button"
-                  variant="outline" 
-                  className="bg-amber-600 hover:bg-amber-700 text-white"
-                  onClick={() => setShowHint(true)}
-                >
-                  <Lightbulb className="mr-1 h-4 w-4" /> Show Hint
-                </Button>
-              )}
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Button 
+                type="button"
+                variant="secondary" 
+                onClick={handleShowAnswer}
+                className="bg-slate-600 hover:bg-slate-700 text-white w-full sm:w-auto"
+              >
+                Show Answer
+              </Button>
               
-              {!isCorrect && (
+              {!showAnswer && (
                 <Button 
-                  type="button"
-                  variant="outline" 
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
-                  onClick={() => {
-                    form.setValue("answer", question.answer);
-                    setIsCorrect(true);
-                    onAnswered(true);
-                  }}
+                  type="submit" 
+                  disabled={isCorrect === true || !form.getValues("answer").trim()}
+                  className="bg-green-600 hover:bg-green-700 w-full sm:w-auto"
                 >
-                  Show Answer
+                  Submit Answer <ChevronRight className="ml-1 h-4 w-4" />
                 </Button>
               )}
             </div>
           </form>
         </Form>
         
-        {isCorrect === false && (
-          <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900 rounded text-red-700 dark:text-red-300 flex items-start gap-2">
-            <X className="h-5 w-5 mt-0.5" />
-            <p>Not quite right. {attempts >= 1 ? "Try again or check the hint below." : "Please try again."}</p>
-          </div>
-        )}
-        
         {showHint && !isCorrect && (
-          <div className="mt-3 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900 rounded text-amber-700 dark:text-amber-300 flex items-start gap-2">
+          <div className="mt-6 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900 rounded text-amber-700 dark:text-amber-300 flex items-start gap-2">
             <Lightbulb className="h-5 w-5 mt-0.5" />
             <p><span className="font-semibold">Hint:</span> {question.hint}</p>
           </div>
         )}
         
         {isCorrect && (
-          <div className="mt-4 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-900 rounded text-green-700 dark:text-green-300 flex items-start gap-2">
+          <div className="mt-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-900 rounded text-green-700 dark:text-green-300 flex items-start gap-2">
             <Check className="h-5 w-5 mt-0.5" />
             <div>
               <p className="font-semibold">Correct!</p>
-              <p>Great job! You can now proceed to the coding exercise.</p>
+              <p>Great job! You can now proceed to the next exercise.</p>
             </div>
           </div>
         )}
+        
+        <div className="text-center mt-8">
+          <Button 
+            type="button" 
+            variant="link" 
+            className="text-blue-400 hover:text-blue-300"
+            onClick={() => setShowHint(!showHint)}
+          >
+            What is an Exercise?
+          </Button>
+        </div>
       </div>
     </div>
   );

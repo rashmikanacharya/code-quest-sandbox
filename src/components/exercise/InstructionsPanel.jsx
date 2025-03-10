@@ -5,20 +5,20 @@ import { CheckCircle, AlertCircle, BookOpen, HelpCircle } from "lucide-react";
 
 const InstructionsPanel = ({ exerciseData, showSuccess, showError, errorMessage }) => {
   return (
-    <div>
-      <Tabs defaultValue="instructions">
-        <TabsList className="w-full">
-          <TabsTrigger value="instructions" className="flex-1">
+    <div className="bg-white dark:bg-slate-900 border rounded-md">
+      <Tabs defaultValue="instructions" className="w-full">
+        <TabsList className="w-full bg-slate-100 dark:bg-slate-800 rounded-t-md">
+          <TabsTrigger value="instructions" className="flex-1 py-3">
             <BookOpen className="h-4 w-4 mr-2" /> Instructions
           </TabsTrigger>
-          <TabsTrigger value="hints" className="flex-1">
+          <TabsTrigger value="hints" className="flex-1 py-3">
             <HelpCircle className="h-4 w-4 mr-2" /> Hints
           </TabsTrigger>
         </TabsList>
         
-        <TabsContent value="instructions" className="p-4 border rounded-md mt-2 bg-white dark:bg-slate-900">
-          <h2 className="text-lg font-bold mb-2">Exercise Instructions</h2>
-          <p className="mb-4">{exerciseData.instructions}</p>
+        <TabsContent value="instructions" className="p-5 bg-white dark:bg-slate-900">
+          <h2 className="text-lg font-bold mb-3">Exercise Instructions</h2>
+          <p className="mb-4 text-gray-700 dark:text-gray-300">{exerciseData.instructions}</p>
           
           <h3 className="text-md font-bold mb-2">Expected Output</h3>
           <pre className="bg-gray-100 dark:bg-slate-800 p-3 rounded-md text-sm overflow-auto">
@@ -26,9 +26,9 @@ const InstructionsPanel = ({ exerciseData, showSuccess, showError, errorMessage 
           </pre>
         </TabsContent>
         
-        <TabsContent value="hints" className="p-4 border rounded-md mt-2 bg-white dark:bg-slate-900">
-          <h2 className="text-lg font-bold mb-2">Hints and Tips</h2>
-          <ul className="list-disc pl-6 space-y-2">
+        <TabsContent value="hints" className="p-5 bg-white dark:bg-slate-900">
+          <h2 className="text-lg font-bold mb-3">Hints and Tips</h2>
+          <ul className="list-disc pl-6 space-y-2 text-gray-700 dark:text-gray-300">
             {exerciseData.hints.map((hint, index) => (
               <li key={index}>{hint}</li>
             ))}
@@ -38,7 +38,7 @@ const InstructionsPanel = ({ exerciseData, showSuccess, showError, errorMessage 
       
       {/* Feedback Messages */}
       {showSuccess && (
-        <div className="mt-4 p-4 border border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-900 rounded-md">
+        <div className="m-5 p-4 border border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-900 rounded-md">
           <div className="flex items-start gap-3">
             <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 shrink-0 mt-0.5" />
             <div>
@@ -52,7 +52,7 @@ const InstructionsPanel = ({ exerciseData, showSuccess, showError, errorMessage 
       )}
       
       {showError && (
-        <div className="mt-4 p-4 border border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-900 rounded-md">
+        <div className="m-5 p-4 border border-red-200 bg-red-50 dark:bg-red-900/20 dark:border-red-900 rounded-md">
           <div className="flex items-start gap-3">
             <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
             <div>
