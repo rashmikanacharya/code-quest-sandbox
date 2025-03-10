@@ -10,7 +10,8 @@ const ExerciseHeader = ({
   handleSubmitCode, 
   isSubmitting, 
   showSuccess, 
-  handleNextExercise 
+  handleNextExercise,
+  disabled
 }) => {
   return (
     <div className="flex items-center justify-between mb-6">
@@ -25,12 +26,12 @@ const ExerciseHeader = ({
       </div>
       
       <div className="flex items-center gap-2">
-        <Button variant="outline" onClick={handleRunCode}>
+        <Button variant="outline" onClick={handleRunCode} disabled={disabled}>
           Run Code
         </Button>
         <Button 
           onClick={handleSubmitCode} 
-          disabled={isSubmitting}
+          disabled={isSubmitting || disabled}
           className={showSuccess ? "bg-green-600 hover:bg-green-700" : ""}
         >
           {isSubmitting ? "Checking..." : (showSuccess ? "Passed!" : "Submit")}

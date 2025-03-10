@@ -40,7 +40,13 @@ console.log(greet());`,
           input: "",
           expectedOutput: "Hello, CodeQuest!"
         }
-      ]
+      ],
+      // New fill-in-the-blank question type
+      fillInTheBlank: {
+        question: "What function is used to output text to the console in JavaScript?",
+        answer: "console.log",
+        hint: "It starts with 'console' and ends with 'log'"
+      }
     },
     python: {
       id: parseInt(exerciseId || "201"),
@@ -78,7 +84,13 @@ print(greet())`,
           input: "",
           expectedOutput: "Hello, CodeQuest!"
         }
-      ]
+      ],
+      // New fill-in-the-blank question type
+      fillInTheBlank: {
+        question: "What function is used to output text to the console in Python?",
+        answer: "print",
+        hint: "It's a 5-letter word that means to output text"
+      }
     },
     java: {
       id: parseInt(exerciseId || "301"),
@@ -126,7 +138,13 @@ print(greet())`,
           input: "",
           expectedOutput: "Hello, CodeQuest!"
         }
-      ]
+      ],
+      // New fill-in-the-blank question type
+      fillInTheBlank: {
+        question: "What method is used to output text to the console in Java?",
+        answer: "System.out.println",
+        hint: "It starts with 'System.out' and ends with 'println'"
+      }
     }
   };
 
@@ -141,3 +159,4 @@ export const getAvailableLanguages = () => {
     { id: "java", name: "Java" }
   ];
 };
+

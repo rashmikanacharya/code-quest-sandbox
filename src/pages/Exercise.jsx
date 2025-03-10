@@ -8,6 +8,7 @@ import { getExerciseData, getAvailableLanguages } from "@/utils/exerciseUtils";
 import ExerciseHeader from "@/components/exercise/ExerciseHeader";
 import InstructionsPanel from "@/components/exercise/InstructionsPanel";
 import { Footer } from "@/components/Footer";
+import { FillInTheBlank } from "@/components/exercise/FillInTheBlank";
 import { 
   Select,
   SelectContent,
@@ -27,6 +28,8 @@ const Exercise = () => {
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [exerciseData, setExerciseData] = useState(null);
+  const [answeredQuestion, setAnsweredQuestion] = useState(false);
+  const [showCodeEditor, setShowCodeEditor] = useState(false);
   
   // Get available languages
   const languages = getAvailableLanguages();
@@ -38,6 +41,8 @@ const Exercise = () => {
     setCode(data.initialCode);
     setShowSuccess(false);
     setShowError(false);
+    setAnsweredQuestion(false);
+    setShowCodeEditor(false);
   }, [exerciseId, language]);
   
   const handleCodeChange = (newCode) => {
@@ -119,6 +124,17 @@ const Exercise = () => {
     const nextId = parseInt(exerciseId || "0") + 1;
     navigate(`/courses/${courseId}/exercises/${nextId}`);
   };
+
+  const handleQuestionAnswered = (isCorrect) => {
+    setAnsweredQuestion(isCorrect);
+    if (isCorrect) {
+      setShowCodeEditor(true);
+      toast({
+        title: "Correct answer!",
+        description: "Now you can proceed to the coding exercise.",
+      });
+    }
+  };
   
   if (!exerciseData) {
     return (
@@ -141,6 +157,7 @@ const Exercise = () => {
           isSubmitting={isSubmitting}
           showSuccess={showSuccess}
           handleNextExercise={handleNextExercise}
+          disabled={!answeredQuestion}
         />
         
         <div className="mb-4">
@@ -161,22 +178,33 @@ const Exercise = () => {
           </div>
         </div>
         
-        <div className="grid gap-6 lg:grid-cols-5">
-          {/* Instructions Panel */}
-          <div className="lg:col-span-2">
-            <InstructionsPanel 
-              exerciseData={exerciseData}
-              showSuccess={showSuccess}
-              showError={showError}
-              errorMessage={errorMessage}
+        {!answeredQuestion && exerciseData.fillInTheBlank && (
+          <div className="mb-6 bg-slate-50 dark:bg-slate-900 p-6 rounded-lg border shadow-sm animate-fade-in">
+            <FillInTheBlank 
+              question={exerciseData.fillInTheBlank}
+              onAnswered={handleQuestionAnswered}
             />
           </div>
-          
-          {/* Code Editor Panel */}
-          <div className="lg:col-span-3">
-            <CodeEditor code={code} language={language} onChange={handleCodeChange} />
+        )}
+        
+        {(!exerciseData.fillInTheBlank || showCodeEditor) && (
+          <div className="grid gap-6 lg:grid-cols-5">
+            {/* Instructions Panel */}
+            <div className="lg:col-span-2">
+              <InstructionsPanel 
+                exerciseData={exerciseData}
+                showSuccess={showSuccess}
+                showError={showError}
+                errorMessage={errorMessage}
+              />
+            </div>
+            
+            {/* Code Editor Panel */}
+            <div className="lg:col-span-3">
+              <CodeEditor code={code} language={language} onChange={handleCodeChange} />
+            </div>
           </div>
-        </div>
+        )}
       </main>
       
       <Footer />
